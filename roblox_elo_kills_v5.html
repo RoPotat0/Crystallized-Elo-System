@@ -1,0 +1,413 @@
+<style>
+:root {
+  --bg: #0a0a0c;
+  --card: #121216;
+  --border: #2a2a32;
+  --accent: #c026d3;
+  --accent2: #3b82f6;
+  --text: #f4f4f5;
+  --text-dim: #a3a3a8;
+  --success: #22c55e;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(192, 38, 211, 0.08) 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle noise texture */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 540px;
+  background: var(--card);
+  padding: 2.8rem 2.4rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 
+    0 30px 70px -15px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 0 rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Crystal glow accent */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(192,38,211,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.notice-top {
+  background: rgba(192, 38, 211, 0.12);
+  border: 1px solid rgba(192, 38, 211, 0.25);
+  color: #e0bbff;
+  font-size: 13.5px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 28px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.2rem;
+  position: relative;
+}
+
+.header h1 {
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #c026d3, #60a5fa, #c026d3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(192, 38, 211, 0.5);
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 32px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+input[type=number] {
+  width: 100%;
+  height: 48px;
+  background: #0a0a0c;
+  border: 1.5px solid #27272a;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 17px;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}
+
+input[type=number]:focus {
+  border-color: #c026d3;
+  box-shadow: 0 0 0 3px rgba(192, 38, 211, 0.2);
+  outline: none;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.toggle-btn {
+  flex: 1;
+  height: 46px;
+  border: 1.5px solid #27272a;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #0a0a0c;
+  color: var(--text-dim);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.toggle-btn:hover {
+  transform: translateY(-1px);
+}
+
+.toggle-btn.active-win { 
+  background: linear-gradient(135deg, #22c55e, #16a34a); 
+  color: #fff; 
+  border-color: #4ade80;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+.toggle-btn.active-loss { 
+  background: linear-gradient(135deg, #ef4444, #dc2626); 
+  color: #fff; 
+  border-color: #f87171;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.toggle-btn.active-draw { 
+  background: linear-gradient(135deg, #f59e0b, #d97706); 
+  color: #fff; 
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.result-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.metric {
+  background: #0a0a0c;
+  border: 1.5px solid #27272a;
+  border-radius: 16px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.6),
+    0 10px 30px -10px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,38,211,0.4), transparent);
+}
+
+.metric .val {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  margin: 8px 0 4px;
+  letter-spacing: -1px;
+}
+
+.metric .mlabel {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.rank-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+.breakdown {
+  background: #0a0a0c;
+  border: 1.5px solid #27272a;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.brow {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  font-size: 13.5px;
+  border-bottom: 1px solid #1f1f24;
+}
+
+.brow:last-child { border-bottom: none; }
+
+.bl { color: var(--text-dim); }
+.bv { font-weight: 600; color: #e4e4e7; }
+
+.footer-note {
+  margin-top: 28px;
+  font-size: 12px;
+  color: #52525b;
+  text-align: center;
+  font-style: italic;
+}
+</style>
+
+<div class="container">
+  <div class="notice-top">
+    New players start at 500 ELO
+  </div>
+  
+  <div class="header">
+    <h1>Crystallized Elo</h1>
+  </div>
+
+  <div class="grid">
+    <div class="field">
+      <p class="section-title">You — Player A</p>
+      <label>ELO Rating</label>
+      <input type="number" id="ratingA" value="500">
+      <label>Total Kills</label>
+      <input type="number" id="killsA" value="0">
+    </div>
+    <div class="field">
+      <p class="section-title">Opponent — Player B</p>
+      <label>ELO Rating</label>
+      <input type="number" id="ratingB" value="500">
+      <label>Total Kills</label>
+      <input type="number" id="killsB" value="0">
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="toggle-btn active-win" id="btn-win" onclick="setResult('win')">WIN</button>
+    <button class="toggle-btn" id="btn-draw" onclick="setResult('draw')">DRAW</button>
+    <button class="toggle-btn" id="btn-loss" onclick="setResult('loss')">LOSS</button>
+  </div>
+
+  <div id="output"></div>
+</div>
+
+<script>
+/* Your original JavaScript stays exactly the same */
+let result = 'win';
+
+function setResult(r) {
+  result = r;
+  document.getElementById('btn-win').className = 'toggle-btn' + (r === 'win' ? ' active-win' : '');
+  document.getElementById('btn-draw').className = 'toggle-btn' + (r === 'draw' ? ' active-draw' : '');
+  document.getElementById('btn-loss').className = 'toggle-btn' + (r === 'loss' ? ' active-loss' : '');
+  calc();
+}
+
+function getRank(elo) {
+  if (elo < 600) return { name: 'BRONZE', color: '#cd7f32', bg: 'rgba(205, 127, 50, 0.2)' };
+  if (elo < 900) return { name: 'SILVER', color: '#c0c0c0', bg: 'rgba(192, 192, 192, 0.2)' };
+  if (elo < 1200) return { name: 'GOLD', color: '#ffd700', bg: 'rgba(255, 215, 0, 0.2)' };
+  if (elo < 1500) return { name: 'PLATINUM', color: '#e5e4e2', bg: 'rgba(229, 228, 226, 0.2)' };
+  if (elo < 1800) return { name: 'DIAMOND', color: '#67e8f9', bg: 'rgba(103, 232, 249, 0.2)' };
+  return { name: 'CHAMPION', color: '#c026d3', bg: 'rgba(192, 38, 211, 0.25)' };
+}
+
+function getKFromKills(kills) {
+  if (kills < 50) return { k: 36, label: 'Unranked' };
+  if (kills < 200) return { k: 30, label: 'Rising' };
+  if (kills < 500) return { k: 26, label: 'Regular' };
+  if (kills < 1000) return { k: 22, label: 'Veteran' };
+  return { k: 18, label: 'Elite' };
+}
+
+function getExchangeMult(kA, kB) {
+  let diff = Math.abs(kA - kB);
+  if (diff < 200) return { mult: 1.0, pct: 0 };
+  if (diff < 500) return { mult: 0.85, pct: 15 };
+  return { mult: 0.70, pct: 30 };
+}
+
+function calc() {
+  const rA = parseFloat(document.getElementById('ratingA').value) || 0;
+  const rB = parseFloat(document.getElementById('ratingB').value) || 0;
+  const kA = parseInt(document.getElementById('killsA').value) || 0;
+  const kB = parseInt(document.getElementById('killsB').value) || 0;
+
+  const momA = getKFromKills(kA);
+  const momB = getKFromKills(kB);
+  const expectedA = 1 / (1 + Math.pow(10, (rB - rA) / 400));
+  const expectedB = 1 - expectedA;
+
+  let scoreA = result === 'win' ? 1 : (result === 'draw' ? 0.5 : 0);
+  let scoreB = 1 - scoreA;
+
+  const exch = getExchangeMult(kA, kB);
+  let totalA = Math.round(momA.k * (scoreA - expectedA) * exch.mult);
+  let totalB = Math.round(momB.k * (scoreB - expectedB) * exch.mult);
+
+  if (result === 'win' && rB > rA) totalA += 10;
+
+  const newA = Math.max(0, Math.round(rA + totalA));
+  const newB = Math.max(0, Math.round(rB + totalB));
+
+  const rankA = getRank(newA);
+  const rankB = getRank(newB);
+
+  document.getElementById('output').innerHTML = `
+    <div class="result-cards">
+      <div class="metric">
+        <div class="mlabel">Your New ELO</div>
+        <div class="val">${newA}</div>
+        <div style="font-size:15px; font-weight:700; color:${totalA >= 0 ? 'var(--success)' : 'var(--danger)'}">
+          ${totalA >= 0 ? '↑' : '↓'} ${Math.abs(totalA)}
+        </div>
+        <span class="rank-badge" style="background:${rankA.bg}; color:${rankA.color}; border:1px solid ${rankA.color}30;">
+          ${rankA.name}
+        </span>
+      </div>
+      <div class="metric">
+        <div class="mlabel">Opponent New ELO</div>
+        <div class="val">${newB}</div>
+        <div style="font-size:15px; font-weight:700; color:${totalB >= 0 ? 'var(--success)' : 'var(--danger)'}">
+          ${totalB >= 0 ? '↑' : '↓'} ${Math.abs(totalB)}
+        </div>
+        <span class="rank-badge" style="background:${rankB.bg}; color:${rankB.color}; border:1px solid ${rankB.color}30;">
+          ${rankB.name}
+        </span>
+      </div>
+    </div>
+    <div class="breakdown">
+      <div class="brow"><span class="bl">Win Probability</span><span class="bv">${Math.round(expectedA * 100)}%</span></div>
+      <div class="brow"><span class="bl">Your Momentum</span><span class="bv">${momA.label}</span></div>
+      <div class="brow"><span class="bl">Kill Gap Scaling</span><span class="bv">${exch.pct}% Reduction</span></div>
+    </div>
+  `;
+}
+
+['ratingA', 'ratingB', 'killsA', 'killsB'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calc);
+});
+
+calc();
+</script>
