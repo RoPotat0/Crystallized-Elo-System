@@ -4,16 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crystallized Elo</title>
-
 <!-- Open Graph / Discord embed -->
-<meta property="og:type"        content="website">
-<meta property="og:title"       content="Crystallized Elo — ELO Calculator">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crystallized Elo — ELO Calculator">
 <meta property="og:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
-<meta property="og:image"       content="https://i.imgur.com/placeholder.png">
-
-<!-- Twitter card (also used by some Discord previews) -->
-<meta name="twitter:card"        content="summary">
-<meta name="twitter:title"       content="Crystallized Elo — ELO Calculator">
+<meta property="og:image" content="https://i.imgur.com/placeholder.png">
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Crystallized Elo — ELO Calculator">
 <meta name="twitter:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
 <style>
 :root {
@@ -63,7 +61,7 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 .view { padding: 2.8rem 2.4rem; position: relative; z-index: 1; }
-#view-input  { display: block; }
+#view-input { display: block; }
 #view-result { display: none; }
 
 /* INPUT */
@@ -110,7 +108,7 @@ input[type=number]:focus {
   transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
 }
 .toggle-btn:hover { transform: translateY(-1px); }
-.toggle-btn.active-win  { background: linear-gradient(135deg,#22c55e,#16a34a); color:#fff; border-color:#4ade80; box-shadow:0 0 20px rgba(34,197,94,0.4); }
+.toggle-btn.active-win { background: linear-gradient(135deg,#22c55e,#16a34a); color:#fff; border-color:#4ade80; box-shadow:0 0 20px rgba(34,197,94,0.4); }
 .toggle-btn.active-draw { background: linear-gradient(135deg,#f59e0b,#d97706); color:#fff; border-color:#fbbf24; box-shadow:0 0 20px rgba(245,158,11,0.4); }
 .toggle-btn.active-loss { background: linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border-color:#f87171; box-shadow:0 0 20px rgba(239,68,68,0.4); }
 .calc-btn {
@@ -130,12 +128,11 @@ input[type=number]:focus {
 #view-result { animation: slideIn 0.4s cubic-bezier(0.23,1,0.32,1); }
 @keyframes slideIn {
   from { opacity:0; transform:translateY(18px); }
-  to   { opacity:1; transform:translateY(0); }
+  to { opacity:1; transform:translateY(0); }
 }
 .result-header { text-align: center; margin-bottom: 1.8rem; }
 .result-outcome { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
 .result-title { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.5px; }
-
 .players-grid {
   display: grid; grid-template-columns: 1fr 40px 1fr;
   gap: 12px; align-items: center; margin-bottom: 20px;
@@ -151,9 +148,8 @@ input[type=number]:focus {
 }
 .player-card.winner { border-color: rgba(34,197,94,0.4); }
 .player-card.winner::before { background: linear-gradient(90deg, transparent, rgba(34,197,94,0.5), transparent); }
-.player-card.loser  { border-color: rgba(239,68,68,0.3); }
-.player-card.loser::before  { background: linear-gradient(90deg, transparent, rgba(239,68,68,0.4), transparent); }
-
+.player-card.loser { border-color: rgba(239,68,68,0.3); }
+.player-card.loser::before { background: linear-gradient(90deg, transparent, rgba(239,68,68,0.4), transparent); }
 .player-label { font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
 .player-elo-new { font-size:36px; font-weight:900; letter-spacing:-1px; line-height:1; margin-bottom:4px; }
 .player-elo-old { font-size:12px; color:var(--text-dim); margin-bottom:8px; }
@@ -176,7 +172,6 @@ input[type=number]:focus {
 .stat-item { text-align:center; }
 .stat-val { font-size:20px; font-weight:800; margin-bottom:3px; }
 .stat-lbl { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.8px; font-weight:600; }
-
 .action-btns { display:flex; gap:10px; }
 .btn-back {
   height:48px; padding:0 20px;
@@ -195,56 +190,6 @@ input[type=number]:focus {
   display:flex; align-items:center; justify-content:center; gap:7px;
 }
 .btn-rematch:hover { border-color:#52525b; color:var(--text); transform:translateY(-1px); }
-.btn-share {
-  flex:1; height:48px;
-  border:none; border-radius:12px;
-  font-size:14px; font-weight:700; cursor:pointer;
-  background:linear-gradient(135deg,#c026d3,#7c3aed); color:#fff;
-  box-shadow:0 0 20px rgba(192,38,211,0.35);
-  transition:all 0.25s ease;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-}
-.btn-share:hover { transform:translateY(-1px); box-shadow:0 0 30px rgba(192,38,211,0.55); }
-
-/* Share modal */
-.modal-overlay {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,0.7); z-index:100;
-  align-items:center; justify-content:center; padding:24px;
-}
-.modal-overlay.open { display:flex; }
-.modal {
-  background:#18181b; border:1px solid #3f3f46;
-  border-radius:16px; padding:28px 24px; width:100%; max-width:440px;
-  box-shadow:0 30px 60px rgba(0,0,0,0.8);
-  animation: slideIn 0.3s cubic-bezier(0.23,1,0.32,1);
-}
-.modal h3 { font-size:16px; font-weight:800; margin-bottom:6px; }
-.modal p  { font-size:13px; color:var(--text-dim); margin-bottom:18px; }
-.share-box {
-  display:flex; gap:10px; align-items:center;
-  background:#0a0a0c; border:1.5px solid #27272a;
-  border-radius:12px; padding:12px 16px; margin-bottom:18px;
-  font-size:13px; color:#a3a3a8; font-family:monospace;
-  word-break:break-all; line-height:1.5;
-}
-.copy-btn {
-  flex-shrink:0; height:36px; padding:0 14px;
-  border:none; border-radius:9px;
-  font-size:12px; font-weight:700; cursor:pointer;
-  background:linear-gradient(135deg,#c026d3,#7c3aed); color:#fff;
-  transition:all 0.2s ease;
-}
-.copy-btn:hover { transform:scale(1.05); }
-.copy-btn.copied { background:linear-gradient(135deg,#22c55e,#16a34a); }
-.modal-close {
-  width:100%; height:42px;
-  border:1.5px solid #27272a; border-radius:12px;
-  font-size:14px; font-weight:600; cursor:pointer;
-  background:transparent; color:var(--text-dim);
-  transition:all 0.2s ease;
-}
-.modal-close:hover { border-color:#52525b; color:var(--text); }
 
 /* rank-up flash */
 .rankup-flash {
@@ -254,13 +199,12 @@ input[type=number]:focus {
   z-index:10;
 }
 @keyframes rankFlash {
-  0%   { box-shadow:inset 0 0 0 2px rgba(255,215,0,0.9),0 0 40px rgba(255,215,0,0.6); opacity:1; }
+  0% { box-shadow:inset 0 0 0 2px rgba(255,215,0,0.9),0 0 40px rgba(255,215,0,0.6); opacity:1; }
   100% { box-shadow:inset 0 0 0 2px transparent,0 0 0 transparent; opacity:0; }
 }
 </style>
 </head>
 <body>
-
 <div class="container">
   <!-- INPUT VIEW -->
   <div class="view" id="view-input">
@@ -279,9 +223,9 @@ input[type=number]:focus {
       </div>
     </div>
     <div class="btn-group">
-      <button class="toggle-btn active-win"  id="btn-win"  onclick="setResult('win')">WIN</button>
-      <button class="toggle-btn"             id="btn-draw" onclick="setResult('draw')">DRAW</button>
-      <button class="toggle-btn"             id="btn-loss" onclick="setResult('loss')">LOSS</button>
+      <button class="toggle-btn active-win" id="btn-win" onclick="setResult('win')">WIN</button>
+      <button class="toggle-btn" id="btn-draw" onclick="setResult('draw')">DRAW</button>
+      <button class="toggle-btn" id="btn-loss" onclick="setResult('loss')">LOSS</button>
     </div>
     <button class="calc-btn" onclick="calculate()">CALCULATE →</button>
   </div>
@@ -290,45 +234,33 @@ input[type=number]:focus {
   <div class="view" id="view-result"></div>
 </div>
 
-<!-- SHARE MODAL -->
-<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <h3>🔗 Share Result</h3>
-    <p>Copy this link and send it to your opponent — they'll see the exact result.</p>
-    <div class="share-box">
-      <span id="share-url" style="flex:1"></span>
-      <button class="copy-btn" id="copy-btn" onclick="copyShareText()">Copy</button>
-    </div>
-    <button class="modal-close" onclick="closeModal()">Close</button>
-  </div>
-</div>
-
 <script>
 let result = 'win';
 let lastCalc = null;
 
 function setResult(r) {
   result = r;
-  document.getElementById('btn-win').className  = 'toggle-btn' + (r==='win'  ? ' active-win'  : '');
+  document.getElementById('btn-win').className = 'toggle-btn' + (r==='win' ? ' active-win' : '');
   document.getElementById('btn-draw').className = 'toggle-btn' + (r==='draw' ? ' active-draw' : '');
   document.getElementById('btn-loss').className = 'toggle-btn' + (r==='loss' ? ' active-loss' : '');
 }
 
 function getRank(elo) {
-  if (elo < 600)  return { name:'BRONZE',   color:'#cd7f32', bg:'rgba(205,127,50,0.2)' };
-  if (elo < 900)  return { name:'SILVER',   color:'#c0c0c0', bg:'rgba(192,192,192,0.2)' };
-  if (elo < 1200) return { name:'GOLD',     color:'#ffd700', bg:'rgba(255,215,0,0.2)' };
+  if (elo < 600) return { name:'BRONZE', color:'#cd7f32', bg:'rgba(205,127,50,0.2)' };
+  if (elo < 900) return { name:'SILVER', color:'#c0c0c0', bg:'rgba(192,192,192,0.2)' };
+  if (elo < 1200) return { name:'GOLD', color:'#ffd700', bg:'rgba(255,215,0,0.2)' };
   if (elo < 1500) return { name:'PLATINUM', color:'#e5e4e2', bg:'rgba(229,228,226,0.2)' };
-  if (elo < 1800) return { name:'DIAMOND',  color:'#67e8f9', bg:'rgba(103,232,249,0.2)' };
-  return               { name:'CHAMPION', color:'#c026d3', bg:'rgba(192,38,211,0.25)' };
+  if (elo < 1800) return { name:'DIAMOND', color:'#67e8f9', bg:'rgba(103,232,249,0.2)' };
+  return { name:'CHAMPION', color:'#c026d3', bg:'rgba(192,38,211,0.25)' };
 }
+
 function rankIndex(elo) {
   if (elo < 600) return 0; if (elo < 900) return 1;
   if (elo < 1200) return 2; if (elo < 1500) return 3;
   if (elo < 1800) return 4; return 5;
 }
 
-// On load: if URL has params, auto-show results
+// Auto-load from URL
 window.addEventListener('DOMContentLoaded', () => {
   try {
     const p = new URLSearchParams(window.location.search);
@@ -345,17 +277,27 @@ function calculate(fromURL = false) {
   const rA = parseFloat(document.getElementById('ratingA').value) || 0;
   const rB = parseFloat(document.getElementById('ratingB').value) || 0;
   const K = 30;
+
   const expectedA = 1 / (1 + Math.pow(10, (rB - rA) / 400));
   const expectedB = 1 - expectedA;
+
   let scoreA = result === 'win' ? 1 : (result === 'draw' ? 0.5 : 0);
   let scoreB = 1 - scoreA;
+
   let deltaA = Math.round(K * (scoreA - expectedA));
   let deltaB = Math.round(K * (scoreB - expectedB));
+
   let upsetBonus = 0;
-  if (result === 'win' && rB > rA) { upsetBonus = 10; deltaA += upsetBonus; }
+  if (result === 'win' && rB > rA) { 
+    upsetBonus = 10; 
+    deltaA += upsetBonus; 
+  }
+
   const newA = Math.max(0, Math.round(rA + deltaA));
   const newB = Math.max(0, Math.round(rB + deltaB));
+
   const rankedUp = rankIndex(newA) > rankIndex(rA);
+
   lastCalc = { rA, rB, result, deltaA, deltaB, newA, newB, expectedA, upsetBonus };
 
   if (!fromURL) {
@@ -375,12 +317,14 @@ function calculate(fromURL = false) {
 function renderResult({ rA, rB, result, deltaA, deltaB, newA, newB, expectedA, upsetBonus }, rankedUp) {
   const rankA = getRank(newA);
   const rankB = getRank(newB);
-  const outcomeText  = result==='win' ? '🏆 Victory' : result==='draw' ? '🤝 Draw' : '💀 Defeat';
+  const outcomeText = result==='win' ? '🏆 Victory' : result==='draw' ? '🤝 Draw' : '💀 Defeat';
   const outcomeColor = result==='win' ? 'var(--success)' : result==='draw' ? 'var(--warn)' : 'var(--danger)';
-  const cardClassA   = result==='win' ? 'player-card winner' : result==='loss' ? 'player-card loser' : 'player-card';
-  const cardClassB   = result==='loss' ? 'player-card winner' : result==='win' ? 'player-card loser' : 'player-card';
-  const upsetNote    = upsetBonus > 0 ? `<div style="margin-top:8px;font-size:11px;color:#fbbf24;font-weight:700;">⚡ +${upsetBonus} UPSET BONUS</div>` : '';
-  const rankupDiv    = rankedUp ? `<div class="rankup-flash"></div>` : '';
+
+  const cardClassA = result==='win' ? 'player-card winner' : result==='loss' ? 'player-card loser' : 'player-card';
+  const cardClassB = result==='loss' ? 'player-card winner' : result==='win' ? 'player-card loser' : 'player-card';
+
+  const upsetNote = upsetBonus > 0 ? `<div style="margin-top:8px;font-size:11px;color:#fbbf24;font-weight:700;">⚡ +${upsetBonus} UPSET BONUS</div>` : '';
+  const rankupDiv = rankedUp ? `<div class="rankup-flash"></div>` : '';
 
   document.getElementById('view-result').innerHTML = `
     <div class="result-header">
@@ -427,13 +371,12 @@ function renderResult({ rA, rB, result, deltaA, deltaB, newA, newB, expectedA, u
     <div class="action-btns">
       <button class="btn-back" onclick="goBack()">← Back</button>
       <button class="btn-rematch" onclick="rematch()">🔁 Rematch</button>
-      <button class="btn-share" onclick="openShare()">🔗 Share</button>
     </div>
   `;
 }
 
 function switchView(to) {
-  document.getElementById('view-input').style.display  = to==='input'  ? 'block' : 'none';
+  document.getElementById('view-input').style.display = to==='input' ? 'block' : 'none';
   document.getElementById('view-result').style.display = to==='result' ? 'block' : 'none';
 }
 
@@ -449,48 +392,6 @@ function rematch() {
   setResult('win');
   try { history.pushState({}, '', window.location.pathname); } catch(e) {}
   switchView('input');
-}
-
-function openShare() {
-  if (!lastCalc) return;
-  // Use the actual current URL — it already has the params from calculate()
-  const shareText = window.location.href;
-  document.getElementById('share-url').textContent = shareText;
-  document.getElementById('copy-btn').textContent = 'Copy';
-  document.getElementById('copy-btn').classList.remove('copied');
-  document.getElementById('modal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-}
-
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal')) closeModal();
-}
-
-function copyShareText() {
-  const text = document.getElementById('share-url').textContent;
-  const btn = document.getElementById('copy-btn');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ Copied';
-      btn.classList.add('copied');
-    }).catch(() => fallbackCopy(text, btn));
-  } else {
-    fallbackCopy(text, btn);
-  }
-}
-
-function fallbackCopy(text, btn) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); btn.textContent = '✓ Copied'; btn.classList.add('copied'); }
-  catch { btn.textContent = 'Failed'; }
-  document.body.removeChild(ta);
 }
 </script>
 </body>
