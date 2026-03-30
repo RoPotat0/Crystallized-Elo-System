@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crystallized Elo</title>
 <style>
 :root {
   --bg: #0a0a0c;
@@ -28,7 +34,6 @@ body {
   overflow: hidden;
 }
 
-/* Subtle noise texture */
 body::before {
   content: '';
   position: absolute;
@@ -55,7 +60,6 @@ body::before {
   overflow: hidden;
 }
 
-/* Crystal glow accent */
 .container::before {
   content: '';
   position: absolute;
@@ -276,6 +280,8 @@ input[type=number]:focus {
   font-style: italic;
 }
 </style>
+</head>
+<body>
 
 <div class="container">
   <div class="notice-top">
@@ -291,15 +297,11 @@ input[type=number]:focus {
       <p class="section-title">You — Player A</p>
       <label>ELO Rating</label>
       <input type="number" id="ratingA" value="500">
-      <label>Total Kills</label>
-      <input type="number" id="killsA" value="0">
     </div>
     <div class="field">
       <p class="section-title">Opponent — Player B</p>
       <label>ELO Rating</label>
       <input type="number" id="ratingB" value="500">
-      <label>Total Kills</label>
-      <input type="number" id="killsB" value="0">
     </div>
   </div>
 
@@ -313,7 +315,6 @@ input[type=number]:focus {
 </div>
 
 <script>
-/* Your original JavaScript stays exactly the same */
 let result = 'win';
 
 function setResult(r) {
@@ -333,38 +334,19 @@ function getRank(elo) {
   return { name: 'CHAMPION', color: '#c026d3', bg: 'rgba(192, 38, 211, 0.25)' };
 }
 
-function getKFromKills(kills) {
-  if (kills < 50) return { k: 36, label: 'Unranked' };
-  if (kills < 200) return { k: 30, label: 'Rising' };
-  if (kills < 500) return { k: 26, label: 'Regular' };
-  if (kills < 1000) return { k: 22, label: 'Veteran' };
-  return { k: 18, label: 'Elite' };
-}
-
-function getExchangeMult(kA, kB) {
-  let diff = Math.abs(kA - kB);
-  if (diff < 200) return { mult: 1.0, pct: 0 };
-  if (diff < 500) return { mult: 0.85, pct: 15 };
-  return { mult: 0.70, pct: 30 };
-}
-
 function calc() {
   const rA = parseFloat(document.getElementById('ratingA').value) || 0;
   const rB = parseFloat(document.getElementById('ratingB').value) || 0;
-  const kA = parseInt(document.getElementById('killsA').value) || 0;
-  const kB = parseInt(document.getElementById('killsB').value) || 0;
 
-  const momA = getKFromKills(kA);
-  const momB = getKFromKills(kB);
+  const K = 30;
   const expectedA = 1 / (1 + Math.pow(10, (rB - rA) / 400));
   const expectedB = 1 - expectedA;
 
   let scoreA = result === 'win' ? 1 : (result === 'draw' ? 0.5 : 0);
   let scoreB = 1 - scoreA;
 
-  const exch = getExchangeMult(kA, kB);
-  let totalA = Math.round(momA.k * (scoreA - expectedA) * exch.mult);
-  let totalB = Math.round(momB.k * (scoreB - expectedB) * exch.mult);
+  let totalA = Math.round(K * (scoreA - expectedA));
+  let totalB = Math.round(K * (scoreB - expectedB));
 
   if (result === 'win' && rB > rA) totalA += 10;
 
@@ -399,15 +381,18 @@ function calc() {
     </div>
     <div class="breakdown">
       <div class="brow"><span class="bl">Win Probability</span><span class="bv">${Math.round(expectedA * 100)}%</span></div>
-      <div class="brow"><span class="bl">Your Momentum</span><span class="bv">${momA.label}</span></div>
-      <div class="brow"><span class="bl">Kill Gap Scaling</span><span class="bv">${exch.pct}% Reduction</span></div>
+      <div class="brow"><span class="bl">ELO Change (You)</span><span class="bv">${totalA >= 0 ? '+' : ''}${totalA}</span></div>
+      <div class="brow"><span class="bl">ELO Change (Opponent)</span><span class="bv">${totalB >= 0 ? '+' : ''}${totalB}</span></div>
     </div>
   `;
 }
 
-['ratingA', 'ratingB', 'killsA', 'killsB'].forEach(id => {
+['ratingA', 'ratingB'].forEach(id => {
   document.getElementById(id).addEventListener('input', calc);
 });
 
 calc();
 </script>
+
+</body>
+</html>
