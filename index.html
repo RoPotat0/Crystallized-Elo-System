@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crystallized Elo</title>
+
+<!-- Open Graph / Discord embed -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="Crystallized Elo — ELO Calculator">
+<meta property="og:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
+<meta property="og:image"       content="https://i.imgur.com/placeholder.png">
+
+<!-- Twitter card (also used by some Discord previews) -->
+<meta name="twitter:card"        content="summary">
+<meta name="twitter:title"       content="Crystallized Elo — ELO Calculator">
+<meta name="twitter:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
 <style>
 :root {
   --bg: #0a0a0c;
@@ -317,7 +328,20 @@ function rankIndex(elo) {
   if (elo < 1800) return 4; return 5;
 }
 
-function calculate() {
+// On load: if URL has params, auto-show results
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    if (p.has('rA') && p.has('rB') && p.has('res')) {
+      document.getElementById('ratingA').value = p.get('rA');
+      document.getElementById('ratingB').value = p.get('rB');
+      setResult(p.get('res'));
+      calculate(true);
+    }
+  } catch(e) {}
+});
+
+function calculate(fromURL = false) {
   const rA = parseFloat(document.getElementById('ratingA').value) || 0;
   const rB = parseFloat(document.getElementById('ratingB').value) || 0;
   const K = 30;
@@ -333,6 +357,17 @@ function calculate() {
   const newB = Math.max(0, Math.round(rB + deltaB));
   const rankedUp = rankIndex(newA) > rankIndex(rA);
   lastCalc = { rA, rB, result, deltaA, deltaB, newA, newB, expectedA, upsetBonus };
+
+  if (!fromURL) {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('rA', rA);
+      url.searchParams.set('rB', rB);
+      url.searchParams.set('res', result);
+      history.pushState({}, '', url.toString());
+    } catch(e) {}
+  }
+
   renderResult(lastCalc, rankedUp);
   switchView('result');
 }
@@ -402,20 +437,24 @@ function switchView(to) {
   document.getElementById('view-result').style.display = to==='result' ? 'block' : 'none';
 }
 
-function goBack() { switchView('input'); }
+function goBack() {
+  try { history.pushState({}, '', window.location.pathname); } catch(e) {}
+  switchView('input');
+}
 
 function rematch() {
   if (!lastCalc) return;
   document.getElementById('ratingA').value = lastCalc.newA;
   document.getElementById('ratingB').value = lastCalc.newB;
   setResult('win');
+  try { history.pushState({}, '', window.location.pathname); } catch(e) {}
   switchView('input');
 }
 
 function openShare() {
   if (!lastCalc) return;
-  const { rA, rB, result } = lastCalc;
-  const shareText = `crystallizedelo.com/?rA=${rA}&rB=${rB}&res=${result}`;
+  // Use the actual current URL — it already has the params from calculate()
+  const shareText = window.location.href;
   document.getElementById('share-url').textContent = shareText;
   document.getElementById('copy-btn').textContent = 'Copy';
   document.getElementById('copy-btn').classList.remove('copied');
@@ -433,7 +472,6 @@ function closeModalOutside(e) {
 function copyShareText() {
   const text = document.getElementById('share-url').textContent;
   const btn = document.getElementById('copy-btn');
-  // Try clipboard API, fall back to execCommand
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       btn.textContent = '✓ Copied';
