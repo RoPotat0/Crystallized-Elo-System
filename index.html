@@ -6,12 +6,12 @@
 <title>Crystallized Elo</title>
 <!-- Open Graph / Discord embed -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Crystallized Elo — ELO Calculator">
+<meta property="og:title" content="Crystallized Elo - ELO Calculator">
 <meta property="og:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
 <meta property="og:image" content="https://i.imgur.com/placeholder.png">
 <!-- Twitter card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Crystallized Elo — ELO Calculator">
+<meta name="twitter:title" content="Crystallized Elo - ELO Calculator">
 <meta name="twitter:description" content="Calculate your ELO rating change after a match. See your new rank, win probability, and upset bonuses.">
 <style>
 :root {
@@ -212,12 +212,12 @@ input[type=number]:focus {
     <div class="header"><h1>Crystallized Elo</h1></div>
     <div class="grid">
       <div class="field">
-        <p class="section-title">You — Player A</p>
+        <p class="section-title">You - Player A</p>
         <label>ELO Rating</label>
         <input type="number" id="ratingA" value="500" min="0">
       </div>
       <div class="field">
-        <p class="section-title">Opponent — Player B</p>
+        <p class="section-title">Opponent - Player B</p>
         <label>ELO Rating</label>
         <input type="number" id="ratingB" value="500" min="0">
       </div>
@@ -317,13 +317,13 @@ function calculate(fromURL = false) {
 function renderResult({ rA, rB, result, deltaA, deltaB, newA, newB, expectedA, upsetBonus }, rankedUp) {
   const rankA = getRank(newA);
   const rankB = getRank(newB);
-  const outcomeText = result==='win' ? '🏆 Victory' : result==='draw' ? '🤝 Draw' : '💀 Defeat';
+  const outcomeText = result==='win' ? 'Victory' : result==='draw' ? 'Draw' : 'Defeat';
   const outcomeColor = result==='win' ? 'var(--success)' : result==='draw' ? 'var(--warn)' : 'var(--danger)';
 
   const cardClassA = result==='win' ? 'player-card winner' : result==='loss' ? 'player-card loser' : 'player-card';
   const cardClassB = result==='loss' ? 'player-card winner' : result==='win' ? 'player-card loser' : 'player-card';
 
-  const upsetNote = upsetBonus > 0 ? `<div style="margin-top:8px;font-size:11px;color:#fbbf24;font-weight:700;">⚡ +${upsetBonus} UPSET BONUS</div>` : '';
+  const upsetNote = upsetBonus > 0 ? `<div style="margin-top:8px;font-size:11px;color:#fbbf24;font-weight:700;">+${upsetBonus} UPSET BONUS</div>` : '';
   const rankupDiv = rankedUp ? `<div class="rankup-flash"></div>` : '';
 
   document.getElementById('view-result').innerHTML = `
@@ -370,7 +370,7 @@ function renderResult({ rA, rB, result, deltaA, deltaB, newA, newB, expectedA, u
     </div>
     <div class="action-btns">
       <button class="btn-back" onclick="goBack()">← Back</button>
-      <button class="btn-rematch" onclick="rematch()">🔁 Rematch</button>
+      <button class="btn-rematch" onclick="rematch()">Rematch</button>
     </div>
   `;
 }
