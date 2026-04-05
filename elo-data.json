@@ -7,23 +7,7 @@
       "streak": 0,
       "avatar": "https://cdn.discordapp.com/avatars/941550088684208180/03a3cdc7de415eca22a1800cd10e1215.png?size=1024",
       "username": "thatdoeg"
-    },
-    {
-      "name": "RoPotat0",
-      "discordId": "1239969659185401956",
-      "elo": 200,
-      "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024",
-      "username": "ropotato.",
-      "streak": 0
-    },
-    {
-      "name": "potato",
-      "username": "ropotato.",
-      "discordId": "1239969659185401956",
-      "elo": 200,
-      "streak": 0,
-      "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024"
     }
   ],
-  "lastUpdated": 1775382396
+  "lastUpdated": 1775382410
 }
