@@ -6,351 +6,72 @@
 <title>Crystallized Elo</title>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Crystallized Elo">
-<meta property="og:description" content="ELO leaderboard and calculator for Crystallized.">
+<meta property="og:description" content="ELO leaderboard for Crystallized.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080810;
-  --card: #0f0f1a;
-  --border: #1e1e2e;
-  --text: #e8e8f0;
-  --text-dim: #6b6b8a;
-  --purple: #c026d3;
-  --purple-dim: rgba(192,38,211,0.15);
-  --success: #22c55e;
-  --danger: #ef4444;
-  --warn: #f59e0b;
+  --bg: #080810; --card: #0f0f1a; --border: #1e1e2e;
+  --text: #e8e8f0; --text-dim: #6b6b8a;
+  --purple: #c026d3; --purple-dim: rgba(192,38,211,0.15); --danger: #ef4444;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 16px 60px;
-  position: relative;
-  overflow-x: hidden;
+  background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding: 0 16px 60px; position: relative; overflow-x: hidden;
 }
-/* Background effects */
 body::before {
-  content: '';
-  position: fixed;
-  top: -200px; left: 50%;
-  transform: translateX(-50%);
+  content: ''; position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
   width: 800px; height: 600px;
   background: radial-gradient(ellipse, rgba(192,38,211,0.12) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
 }
-/* Header */
-.site-header {
-  position: relative; z-index: 1;
-  text-align: center;
-  padding: 48px 0 32px;
-}
+.site-header { position: relative; z-index: 1; text-align: center; padding: 48px 0 32px; }
 .site-header h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  letter-spacing: 4px;
-  background: linear-gradient(135deg, #e040fb, #7c3aed, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1;
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: 4px; background: linear-gradient(135deg, #e040fb, #7c3aed, #60a5fa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
 }
-.site-header p {
-  color: var(--text-dim);
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-/* Tab nav */
-.tab-nav {
-  position: relative; z-index: 1;
-  display: flex;
-  gap: 4px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 5px;
-  margin-bottom: 28px;
-}
-.tab-btn {
-  flex: 1;
-  padding: 10px 28px;
-  border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  background: transparent;
-  color: var(--text-dim);
-  letter-spacing: 0.3px;
-}
-.tab-btn.active {
-  background: linear-gradient(135deg, #c026d3, #7c3aed);
-  color: #fff;
-  box-shadow: 0 0 20px rgba(192,38,211,0.4);
-}
-/* Main card */
+.site-header p { color: var(--text-dim); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
 .card {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 560px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
-  overflow: hidden;
+  position: relative; z-index: 1; width: 100%; max-width: 560px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05); overflow: hidden;
 }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-/* ─────────────── LEADERBOARD TAB ─────────────── */
-.lb-header {
-  padding: 28px 28px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.lb-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
-  letter-spacing: 2px;
-  color: var(--text);
-}
+.lb-header { padding: 28px 28px 0; display: flex; align-items: center; justify-content: space-between; }
+.lb-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: var(--text); }
 .lb-refresh {
-  background: var(--purple-dim);
-  border: 1px solid rgba(192,38,211,0.3);
-  color: var(--purple);
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 12px; font-weight: 700;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s;
+  background: var(--purple-dim); border: 1px solid rgba(192,38,211,0.3); color: var(--purple);
+  border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
 }
 .lb-refresh:hover { background: rgba(192,38,211,0.25); }
-.lb-list {
-  padding: 16px 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.lb-loading {
-  text-align: center;
-  color: var(--text-dim);
-  padding: 40px;
-  font-size: 14px;
-}
-.lb-error {
-  text-align: center;
-  color: var(--danger);
-  padding: 40px 28px;
-  font-size: 14px;
-}
+.lb-list { padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+.lb-loading { text-align: center; color: var(--text-dim); padding: 40px; font-size: 14px; }
+.lb-error { text-align: center; color: var(--danger); padding: 40px 28px; font-size: 14px; }
 .lb-row {
-  display: grid;
-  grid-template-columns: 36px 1fr auto auto;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
-  transition: all 0.2s;
-  animation: fadeUp 0.4s ease both;
+  display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 16px; transition: all 0.2s; animation: fadeUp 0.4s ease both;
 }
-.lb-row:hover {
-  border-color: rgba(192,38,211,0.3);
-  background: rgba(192,38,211,0.05);
-}
-.lb-row.top1 { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.04); }
+.lb-row:hover { border-color: rgba(192,38,211,0.3); background: rgba(192,38,211,0.05); }
+.lb-row.top1 { border-color: rgba(255,215,0,0.3);   background: rgba(255,215,0,0.04); }
 .lb-row.top2 { border-color: rgba(192,192,192,0.3); background: rgba(192,192,192,0.04); }
-.lb-row.top3 { border-color: rgba(205,127,50,0.3); background: rgba(205,127,50,0.04); }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.lb-pos {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.1rem;
-  color: var(--text-dim);
-  text-align: center;
-}
-.lb-name {
-  font-weight: 700;
-  font-size: 15px;
-}
-.lb-badge {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 99px;
-}
-.lb-elo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.3rem;
-  letter-spacing: 1px;
-  color: var(--text);
-  min-width: 60px;
-  text-align: right;
-}
-.lb-empty {
-  text-align: center;
-  padding: 48px 28px;
-  color: var(--text-dim);
-}
+.lb-row.top3 { border-color: rgba(205,127,50,0.3);  background: rgba(205,127,50,0.04); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.lb-pos  { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--text-dim); text-align: center; }
+.lb-name { font-weight: 700; font-size: 15px; }
+.lb-badge { font-size: 10px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; }
+.lb-elo  { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 1px; color: var(--text); min-width: 60px; text-align: right; }
+.lb-empty { text-align: center; padding: 48px 28px; color: var(--text-dim); }
 .lb-empty .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
 .lb-empty p { font-size: 14px; }
-/* ─────────────── CALCULATOR TAB ─────────────── */
-.calc-panel { padding: 2.4rem 2rem; }
-.notice-top {
-  background: rgba(192,38,211,0.1);
-  border: 1px solid rgba(192,38,211,0.25);
-  color: #e0bbff;
-  font-size: 13px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  text-align: center;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-.section-title {
-  font-size: 10px; font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 10px;
-}
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
-.field { display: flex; flex-direction: column; gap: 7px; }
-.field label { font-size: 12px; color: var(--text-dim); font-weight: 500; }
-input[type=number] {
-  width: 100%; height: 48px;
-  background: #080810;
-  border: 1.5px solid #1e1e2e;
-  border-radius: 12px;
-  padding: 0 16px;
-  font-size: 17px; color: #fff; font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-}
-input[type=number]:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(192,38,211,0.18);
-  outline: none;
-}
-.btn-group { display: flex; gap: 10px; margin-bottom: 24px; }
-.toggle-btn {
-  flex: 1; height: 44px;
-  border: 1.5px solid #1e1e2e;
-  border-radius: 11px;
-  font-size: 13px; font-weight: 800;
-  cursor: pointer;
-  background: #080810;
-  color: var(--text-dim);
-  font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.5px;
-  transition: all 0.25s;
-}
-.toggle-btn:hover { transform: translateY(-1px); }
-.toggle-btn.active-win { background: linear-gradient(135deg,#22c55e,#16a34a); color:#fff; border-color:#4ade80; box-shadow:0 0 18px rgba(34,197,94,0.4); }
-.toggle-btn.active-draw { background: linear-gradient(135deg,#f59e0b,#d97706); color:#fff; border-color:#fbbf24; box-shadow:0 0 18px rgba(245,158,11,0.4); }
-.toggle-btn.active-loss { background: linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border-color:#f87171; box-shadow:0 0 18px rgba(239,68,68,0.4); }
-.calc-btn {
-  width: 100%; height: 52px;
-  border: none; border-radius: 14px;
-  font-size: 15px; font-weight: 800;
-  cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
-  font-family: 'DM Sans', sans-serif;
-  background: linear-gradient(135deg, #c026d3, #7c3aed);
-  color: #fff;
-  box-shadow: 0 0 24px rgba(192,38,211,0.45);
-  transition: all 0.25s;
-}
-.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(192,38,211,0.65); }
-/* Result */
-#view-result { display: none; animation: slideIn 0.35s cubic-bezier(0.23,1,0.32,1); }
-@keyframes slideIn {
-  from { opacity:0; transform:translateY(16px); }
-  to { opacity:1; transform:translateY(0); }
-}
-.result-header { text-align: center; margin-bottom: 1.6rem; }
-.result-outcome { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
-.result-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; }
-.players-grid {
-  display: grid; grid-template-columns: 1fr 40px 1fr;
-  gap: 10px; align-items: center; margin-bottom: 18px;
-}
-.player-card {
-  background: #080810;
-  border: 1.5px solid #1e1e2e;
-  border-radius: 16px;
-  padding: 18px 12px;
-  text-align: center;
-  position: relative; overflow: hidden;
-}
-.player-card.winner { border-color: rgba(34,197,94,0.4); }
-.player-card.loser { border-color: rgba(239,68,68,0.3); }
-.player-label { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.player-elo-new { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
-.player-elo-old { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; }
-.elo-delta { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-.rank-badge { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
-.vs-circle {
-  width: 38px; height: 38px; border-radius: 50%;
-  background: #0f0f1a; border: 1.5px solid #1e1e2e;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 800; color: var(--text-dim);
-  margin: 0 auto;
-}
-.stats-row {
-  background: #080810; border: 1.5px solid #1e1e2e; border-radius: 12px;
-  padding: 14px 18px; margin-bottom: 18px;
-  display: flex; justify-content: space-around;
-}
-.stat-item { text-align: center; }
-.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.5px; margin-bottom: 3px; }
-.stat-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-.action-btns { display: flex; gap: 10px; }
-.btn-back, .btn-rematch {
-  height: 46px; border-radius: 11px;
-  font-size: 13px; font-weight: 700;
-  cursor: pointer; background: #080810;
-  border: 1.5px solid #1e1e2e; color: var(--text-dim);
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s;
-}
-.btn-back { padding: 0 18px; }
-.btn-rematch { flex: 1; }
-.btn-back:hover, .btn-rematch:hover { border-color: #52525b; color: var(--text); transform: translateY(-1px); }
-.rankup-flash {
-  position: absolute; inset: 0; border-radius: 16px;
-  pointer-events: none;
-  animation: rankFlash 0.9s ease forwards;
-  z-index: 10;
-}
-@keyframes rankFlash {
-  0% { box-shadow: inset 0 0 0 2px rgba(255,215,0,0.9), 0 0 40px rgba(255,215,0,0.6); opacity:1; }
-  100% { box-shadow: inset 0 0 0 2px transparent; opacity:0; }
-}
 </style>
 </head>
 <body>
@@ -358,257 +79,59 @@ input[type=number]:focus {
   <h1>Crystallized Elo</h1>
   <p>Ranked ELO System</p>
 </header>
-<nav class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('leaderboard')">🏆 Leaderboard</button>
-  <button class="tab-btn" onclick="switchTab('calculator')">🧮 Calculator</button>
-</nav>
 <div class="card">
-  <!-- ── LEADERBOARD TAB ── -->
-  <div class="tab-panel active" id="tab-leaderboard">
-    <div class="lb-header">
-      <span class="lb-title">Rankings</span>
-      <button class="lb-refresh" onclick="loadLeaderboard()">↻ Refresh</button>
-    </div>
-    <div class="lb-list" id="lb-list">
-      <div class="lb-loading">Loading rankings...</div>
-    </div>
+  <div class="lb-header">
+    <span class="lb-title">Rankings</span>
+    <button class="lb-refresh" onclick="loadLeaderboard()">↻ Refresh</button>
   </div>
-  <!-- ── CALCULATOR TAB ── -->
-  <div class="tab-panel" id="tab-calculator">
-    <div class="calc-panel">
-      <!-- Input view -->
-      <div id="view-input">
-        <div class="notice-top">New players start at 500 ELO</div>
-        <div class="grid">
-          <div class="field">
-            <p class="section-title">You — Player A</p>
-            <label>ELO Rating</label>
-            <input type="number" id="ratingA" value="500" min="0">
-          </div>
-          <div class="field">
-            <p class="section-title">Opponent — Player B</p>
-            <label>ELO Rating</label>
-            <input type="number" id="ratingB" value="500" min="0">
-          </div>
-        </div>
-        <div class="btn-group">
-          <button class="toggle-btn active-win" id="btn-win" onclick="setResult('win')">WIN</button>
-          <button class="toggle-btn" id="btn-draw" onclick="setResult('draw')">DRAW</button>
-          <button class="toggle-btn" id="btn-loss" onclick="setResult('loss')">LOSS</button>
-        </div>
-        <button class="calc-btn" onclick="calculate()">Calculate</button>
-      </div>
-      <!-- Result view -->
-      <div id="view-result"></div>
-    </div>
+  <div class="lb-list" id="lb-list">
+    <div class="lb-loading">Loading rankings...</div>
   </div>
 </div>
-
 <script>
-// ─── PERCENTILE-BASED RANK FUNCTION (Corrected) ─────────────────────────────
-function getRank(elo, allPlayers = []) {
-  if (allPlayers.length <= 1) {
-    if (elo < 600) return { name:'Faint',     color:'#00FF7F', bg:'rgba(0,255,127,0.2)', emoji:'🟢' };
-    if (elo < 900) return { name:'Refined',   color:'#00BFFF', bg:'rgba(0,191,255,0.2)', emoji:'🔵' };
-    if (elo < 1200) return { name:'Lustrous', color:'#BF00FF', bg:'rgba(191,0,255,0.2)', emoji:'🟣' };
-    if (elo < 1500) return { name:'Brilliant',color:'#FFFF00', bg:'rgba(255,255,0,0.2)', emoji:'⭐' };
-    if (elo < 1800) return { name:'Prismatic',color:'#FF0080', bg:'rgba(255,0,128,0.2)', emoji:'⭕' };
-    return { name:'Cosmic', color:'#8A00C4', bg:'rgba(138,0,196,0.2)', emoji:'⚫' };
+function getRank(elo, allPlayers=[]) {
+  if (allPlayers.length<=1) {
+    if (elo<600)  return {name:'Faint',    color:'#00FF7F',bg:'rgba(0,255,127,0.2)',  emoji:'🟢'};
+    if (elo<900)  return {name:'Refined',  color:'#00BFFF',bg:'rgba(0,191,255,0.2)',  emoji:'🔵'};
+    if (elo<1200) return {name:'Lustrous', color:'#BF00FF',bg:'rgba(191,0,255,0.2)',  emoji:'🟣'};
+    if (elo<1500) return {name:'Brilliant',color:'#FFFF00',bg:'rgba(255,255,0,0.2)',  emoji:'⭐'};
+    if (elo<1800) return {name:'Prismatic',color:'#FF0080',bg:'rgba(255,0,128,0.2)',  emoji:'⭕'};
+    return         {name:'Cosmic',   color:'#8A00C4',bg:'rgba(138,0,196,0.2)',  emoji:'⚫'};
   }
-
-  const sortedElos = [...allPlayers]
-    .map(p => Number(p.elo) || 500)
-    .sort((a, b) => b - a);
-
-  const totalPlayers = sortedElos.length;
-  const rankPosition = sortedElos.findIndex(e => e <= elo);
-  const percentile = (rankPosition / totalPlayers) * 100;
-
-  if (percentile <= 0.03)  return { name: 'Cosmic',    color: '#8A00C4', bg: 'rgba(138,0,196,0.2)', emoji: '⚫' };
-  if (percentile <= 1)     return { name: 'Prismatic', color: '#FF0080', bg: 'rgba(255,0,128,0.2)', emoji: '⭕' };
-  if (percentile <= 6)     return { name: 'Brilliant', color: '#FFFF00', bg: 'rgba(255,255,0,0.2)', emoji: '⭐' };
-  if (percentile <= 27.4)  return { name: 'Lustrous',  color: '#BF00FF', bg: 'rgba(191,0,255,0.2)', emoji: '🟣' };
-  if (percentile <= 65.57) return { name: 'Refined',   color: '#00BFFF', bg: 'rgba(0,191,255,0.2)', emoji: '🔵' };
-  return { name: 'Faint', color: '#00FF7F', bg: 'rgba(0,255,127,0.2)', emoji: '🟢' };
+  const s = [...allPlayers].map(p=>Number(p.elo)||500).sort((a,b)=>b-a);
+  const pct = (s.findIndex(e=>e<=elo) / s.length) * 100;
+  if (pct<=0.03)  return {name:'Cosmic',   color:'#8A00C4',bg:'rgba(138,0,196,0.2)', emoji:'⚫'};
+  if (pct<=1)     return {name:'Prismatic',color:'#FF0080',bg:'rgba(255,0,128,0.2)', emoji:'⭕'};
+  if (pct<=6)     return {name:'Brilliant',color:'#FFFF00',bg:'rgba(255,255,0,0.2)', emoji:'⭐'};
+  if (pct<=27.4)  return {name:'Lustrous', color:'#BF00FF',bg:'rgba(191,0,255,0.2)', emoji:'🟣'};
+  if (pct<=65.57) return {name:'Refined',  color:'#00BFFF',bg:'rgba(0,191,255,0.2)', emoji:'🔵'};
+  return           {name:'Faint',    color:'#00FF7F',bg:'rgba(0,255,127,0.2)', emoji:'🟢'};
 }
-
-// ─── TAB SWITCHER ─────────────────────────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['leaderboard','calculator'][i] === tab);
-  });
-  document.querySelectorAll('.tab-panel').forEach(p => {
-    p.classList.toggle('active', p.id === `tab-${tab}`);
-  });
-}
-
-// ─── LEADERBOARD ─────────────────────────────────────────────────────────────
-async function loadLeaderboard() {
-  const list = document.getElementById('lb-list');
-  list.innerHTML = '<div class="lb-loading">Loading rankings...</div>';
-  try {
-    const res = await fetch('https://raw.githubusercontent.com/RoPotat0/Crystallized-Elo-System/main/elo-data.json?t=' + Date.now());
-    const json = await res.json();
-    
-    const sorted = [...json.players].sort((a, b) => b.elo - a.elo);   // only declared once
-
-    if (sorted.length === 0) {
-      list.innerHTML = `
-        <div class="lb-empty">
-          <div class="empty-icon">🏆</div>
-          <p>No players yet — get in the server and start competing!</p>
-        </div>`;
-      return;
-    }
-
-    const medals = ['🥇', '🥈', '🥉'];
-    const topClasses = ['top1', 'top2', 'top3'];
-
-    list.innerHTML = sorted.map((player, i) => {
-      const rank = getRank(player.elo, json.players);   // Pass all players for percentile
-      const pos = medals[i] ?? `#${i + 1}`;
-      const topClass = topClasses[i] ?? '';
-      const delay = `animation-delay:${i * 0.05}s`;
-      return `
-        <div class="lb-row ${topClass}" style="${delay}">
-          <div class="lb-pos">${pos}</div>
-          <div class="lb-name">${escapeHtml(player.name)}</div>
-          <span class="lb-badge" style="background:${rank.bg};color:${rank.color};border:1px solid ${rank.color}40">${rank.emoji} ${rank.name}</span>
-          <div class="lb-elo">${player.elo}</div>
-        </div>`;
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+async function loadLeaderboard(){
+  const list=document.getElementById('lb-list');
+  list.innerHTML='<div class="lb-loading">Loading rankings...</div>';
+  try{
+    const res=await fetch('https://raw.githubusercontent.com/RoPotat0/Crystallized-Elo-System/main/elo-data.json?t='+Date.now());
+    const json=await res.json();
+    const sorted=[...json.players].sort((a,b)=>b.elo-a.elo);
+    if(!sorted.length){list.innerHTML='<div class="lb-empty"><div class="empty-icon">🏆</div><p>No players yet — get in the server and start competing!</p></div>';return;}
+    const medals=['🥇','🥈','🥉'],tops=['top1','top2','top3'];
+    list.innerHTML=sorted.map((p,i)=>{
+      const r=getRank(p.elo,json.players),pos=medals[i]??`#${i+1}`,tc=tops[i]??'';
+      return `<div class="lb-row ${tc}" style="animation-delay:${i*0.05}s">
+        <div class="lb-pos">${pos}</div>
+        <div class="lb-name">${escapeHtml(p.name)}</div>
+        <span class="lb-badge" style="background:${r.bg};color:${r.color};border:1px solid ${r.color}40">${r.emoji} ${r.name}</span>
+        <div class="lb-elo">${p.elo}</div>
+      </div>`;
     }).join('');
-  } catch (err) {
-    list.innerHTML = `<div class="lb-error">❌ Failed to load leaderboard.<br><small>Check console for details.</small></div>`;
+  }catch(err){
+    list.innerHTML='<div class="lb-error">❌ Failed to load leaderboard.<br><small>Check console for details.</small></div>';
     console.error(err);
   }
 }
-
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ─── CALCULATOR ──────────────────────────────────────────────────────────────
-let result = 'win';
-let lastCalc = null;
-
-function setResult(r) {
-  result = r;
-  document.getElementById('btn-win').className = 'toggle-btn' + (r==='win' ? ' active-win' : '');
-  document.getElementById('btn-draw').className = 'toggle-btn' + (r==='draw' ? ' active-draw' : '');
-  document.getElementById('btn-loss').className = 'toggle-btn' + (r==='loss' ? ' active-loss' : '');
-}
-
-function calculate(fromURL = false) {
-  const rA = parseFloat(document.getElementById('ratingA').value) || 0;
-  const rB = parseFloat(document.getElementById('ratingB').value) || 0;
-  const K = 30;
-  const expectedA = 1 / (1 + Math.pow(10, (rB - rA) / 400));
-  let scoreA = result === 'win' ? 1 : result === 'draw' ? 0.5 : 0;
-  let deltaA = Math.round(K * (scoreA - expectedA));
-  let deltaB = -deltaA;
-  let upsetBonus = 0;
-  if (result === 'win' && rB > rA) { upsetBonus = 10; deltaA += 10; deltaB -= 10; }
-  const newA = Math.max(0, Math.round(rA + deltaA));
-  const newB = Math.max(0, Math.round(rB + deltaB));
-  lastCalc = { rA, rB, result, deltaA, deltaB, newA, newB, expectedA, upsetBonus };
-
-  if (!fromURL) {
-    try {
-      const url = new URL(window.location.href);
-      url.searchParams.set('rA', rA); 
-      url.searchParams.set('rB', rB); 
-      url.searchParams.set('res', result);
-      history.pushState({}, '', url.toString());
-    } catch(e) {}
-  }
-
-  renderResult(lastCalc);
-  document.getElementById('view-input').style.display = 'none';
-  document.getElementById('view-result').style.display = 'block';
-}
-
-function renderResult({ rA, rB, deltaA, deltaB, newA, newB, expectedA, upsetBonus }) {
-  const rankA = getRank(newA, []);   // Use empty array for calculator (fallback)
-  const rankB = getRank(newB, []);
-  const outcomeText = result==='win' ? 'Victory' : result==='draw' ? 'Draw' : 'Defeat';
-  const outcomeColor = result==='win' ? 'var(--success)' : result==='draw' ? 'var(--warn)' : 'var(--danger)';
-  const cardA = result==='win' ? 'player-card winner' : result==='loss' ? 'player-card loser' : 'player-card';
-  const cardB = result==='loss' ? 'player-card winner' : result==='win' ? 'player-card loser' : 'player-card';
-  const upsetNote = upsetBonus > 0 ? `<div style="margin-top:7px;font-size:11px;color:#fbbf24;font-weight:800;">+${upsetBonus} UPSET BONUS</div>` : '';
-
-  document.getElementById('view-result').innerHTML = `
-    <div class="result-header">
-      <div class="result-outcome" style="color:${outcomeColor}">${outcomeText}</div>
-      <div class="result-title">ELO Updated</div>
-    </div>
-    <div class="players-grid">
-      <div class="${cardA}">
-        <div class="player-label">You</div>
-        <div class="player-elo-new">${newA}</div>
-        <div class="player-elo-old">was ${rA}</div>
-        <div class="elo-delta" style="color:${deltaA>=0?'var(--success)':'var(--danger)'}">${deltaA>=0?'↑':'↓'} ${Math.abs(deltaA)}</div>
-        <span class="rank-badge" style="background:${rankA.bg};color:${rankA.color};border:1px solid ${rankA.color}40">${rankA.emoji} ${rankA.name}</span>
-        ${upsetNote}
-      </div>
-      <div class="vs-circle">VS</div>
-      <div class="${cardB}">
-        <div class="player-label">Opponent</div>
-        <div class="player-elo-new">${newB}</div>
-        <div class="player-elo-old">was ${rB}</div>
-        <div class="elo-delta" style="color:${deltaB>=0?'var(--success)':'var(--danger)'}">${deltaB>=0?'↑':'↓'} ${Math.abs(deltaB)}</div>
-        <span class="rank-badge" style="background:${rankB.bg};color:${rankB.color};border:1px solid ${rankB.color}40">${rankB.emoji} ${rankB.name}</span>
-      </div>
-    </div>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-val">${Math.round(expectedA * 100)}%</div>
-        <div class="stat-lbl">Win Prob</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val" style="color:${deltaA>=0?'var(--success)':'var(--danger)'}">${deltaA>=0?'+':''}${deltaA}</div>
-        <div class="stat-lbl">Your ELO Δ</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">${Math.abs(rB - rA)}</div>
-        <div class="stat-lbl">Rating Gap</div>
-      </div>
-    </div>
-    <div class="action-btns">
-      <button class="btn-back" onclick="goBack()">← Back</button>
-      <button class="btn-rematch" onclick="rematch()">↺ Rematch</button>
-    </div>`;
-}
-
-function goBack() {
-  try { history.pushState({}, '', window.location.pathname); } catch(e) {}
-  document.getElementById('view-input').style.display = 'block';
-  document.getElementById('view-result').style.display = 'none';
-}
-
-function rematch() {
-  if (!lastCalc) return;
-  document.getElementById('ratingA').value = lastCalc.newA;
-  document.getElementById('ratingB').value = lastCalc.newB;
-  setResult('win');
-  try { history.pushState({}, '', window.location.pathname); } catch(e) {}
-  document.getElementById('view-input').style.display = 'block';
-  document.getElementById('view-result').style.display = 'none';
-}
-
-// Auto-load from URL params
-window.addEventListener('DOMContentLoaded', () => {
-  loadLeaderboard();
-  try {
-    const p = new URLSearchParams(window.location.search);
-    if (p.has('rA') && p.has('rB') && p.has('res')) {
-      document.getElementById('ratingA').value = p.get('rA');
-      document.getElementById('ratingB').value = p.get('rB');
-      setResult(p.get('res'));
-      switchTab('calculator');
-      calculate(true);
-    }
-  } catch(e) {}
-});
+loadLeaderboard();
 </script>
 </body>
 </html>
