@@ -3,7 +3,7 @@
     {
       "name": "That1doeg",
       "discordId": "941550088684208180",
-      "elo": 200,
+      "elo": 181,
       "streak": 0,
       "avatar": "https://cdn.discordapp.com/avatars/941550088684208180/03a3cdc7de415eca22a1800cd10e1215.png?size=1024",
       "username": "thatdoeg"
@@ -11,11 +11,11 @@
     {
       "name": "RoPotat0",
       "discordId": "1239969659185401956",
-      "elo": 218,
+      "elo": 237,
       "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024",
       "username": "ropotato.",
-      "streak": 1
+      "streak": 2
     }
   ],
-  "lastUpdated": 1775380777
+  "lastUpdated": 1775380795
 }
