@@ -3,8 +3,8 @@
     {
       "name": "That1doeg",
       "discordId": "941550088684208180",
-      "elo": 254,
-      "streak": 3,
+      "elo": 231,
+      "streak": 0,
       "avatar": "https://cdn.discordapp.com/avatars/941550088684208180/03a3cdc7de415eca22a1800cd10e1215.png?size=1024",
       "username": "thatdoeg"
     },
@@ -20,10 +20,10 @@
       "name": ":Potato(Master)",
       "username": "ropotato.",
       "discordId": "1239969659185401956",
-      "elo": 200,
-      "streak": 0,
+      "elo": 223,
+      "streak": 1,
       "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024"
     }
   ],
-  "lastUpdated": 1775422724
+  "lastUpdated": 1775422743
 }
