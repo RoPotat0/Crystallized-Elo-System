@@ -3,8 +3,8 @@
     {
       "name": "That1doeg",
       "discordId": "941550088684208180",
-      "elo": 200,
-      "streak": 0,
+      "elo": 220,
+      "streak": 1,
       "avatar": "https://cdn.discordapp.com/avatars/941550088684208180/03a3cdc7de415eca22a1800cd10e1215.png?size=1024",
       "username": "thatdoeg"
     },
@@ -20,10 +20,10 @@
       "name": "Crystal Ranks",
       "username": "Crystal Ranks",
       "discordId": "1490133268463353989",
-      "elo": 200,
+      "elo": 180,
       "streak": 0,
       "avatar": "https://cdn.discordapp.com/avatars/1490133268463353989/ea79da46b6f7070533face10dcb92f2b.png?size=1024"
     }
   ],
-  "lastUpdated": 1775383211
+  "lastUpdated": 1775383217
 }
