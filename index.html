@@ -15,7 +15,11 @@
         .site-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; background: linear-gradient(135deg, #e040fb, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .discord-links { display: flex; gap: 15px; justify-content: center; margin-top: 10px; }
         .discord-links a { color: #5865f2; text-decoration: none; font-weight: bold; font-size: 13px; }
-        .search-bar { width: 100%; max-width: 500px; padding: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: white; margin-bottom: 15px; outline: none; }
+        
+        .search-row { width: 100%; max-width: 500px; display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-bar { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: white; outline: none; }
+        .refresh-btn { padding: 0 15px; background: var(--purple); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: bold; }
+
         .stats-bar { width: 100%; max-width: 500px; display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-bottom: 10px; }
         .lb-card { width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border); border-radius: 15px; overflow: hidden; }
         .lb-row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
@@ -23,7 +27,11 @@
         .row-info { display: flex; align-items: center; gap: 12px; }
         .avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1px solid #333; }
         .streak { color: #fbbf24; font-size: 11px; font-weight: bold; }
-        .lb-elo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; text-align: right; }
+        
+        .lb-elo-cell { text-align: right; }
+        .lb-elo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; line-height: 1; }
+        .rank-label { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: 4px; display: block; letter-spacing: 0.5px; }
+
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; text-align: center; width: 300px; position: relative; }
         .modal-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--purple); margin-bottom: 15px; }
@@ -39,7 +47,10 @@
     </div>
 </header>
 
-<input type="text" id="search" class="search-bar" placeholder="Search for a player..." onkeyup="filter()">
+<div class="search-row">
+    <input type="text" id="search" class="search-bar" placeholder="Search for a player..." onkeyup="filter()">
+    <button class="refresh-btn" onclick="load()">↻</button>
+</div>
 
 <div class="stats-bar">
     <span id="player-count">0 Players</span>
@@ -77,12 +88,22 @@ function getRank(elo, list) {
 }
 
 async function load() {
-    const res = await fetch('https://raw.githubusercontent.com/RoPotat0/Crystallized-Elo-System/main/elo-data.json?t='+Date.now());
-    const data = await res.json();
-    players = data.players.sort((a,b)=>b.elo-a.elo);
-    document.getElementById('player-count').innerText = players.length + " Players";
-    document.getElementById('update-time').innerText = "Last updated: " + (data.lastUpdated || 'Recently');
-    render(players);
+    const btn = document.querySelector('.refresh-btn');
+    btn.innerText = '...';
+    try {
+        const res = await fetch('https://raw.githubusercontent.com/RoPotat0/Crystallized-Elo-System/main/elo-data.json?t='+Date.now());
+        const data = await res.json();
+        players = data.players.sort((a,b)=>b.elo-a.elo);
+        document.getElementById('player-count').innerText = players.length + " Players";
+        
+        if(data.lastUpdated) {
+            const date = new Date(data.lastUpdated * 1000);
+            document.getElementById('update-time').innerText = "Last update: " + date.toLocaleTimeString();
+        }
+
+        render(players);
+    } catch(e) { console.error(e); }
+    btn.innerText = '↻';
 }
 
 function render(list) {
@@ -98,8 +119,9 @@ function render(list) {
                     ${p.streak > 0 ? `<span class="streak">🔥${p.streak}</span>` : ''}
                 </div>
             </div>
-            <div class="lb-elo">
-                ${p.elo}<br><span style="font-size:9px; color:${r.c}">${r.e} ${r.n}</span>
+            <div class="lb-elo-cell">
+                <div class="lb-elo">${p.elo}</div>
+                <span class="rank-label" style="color:${r.c}">${r.e} ${r.n}</span>
             </div>
         </div>`;
     }).join('');
