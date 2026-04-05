@@ -23,7 +23,15 @@
       "elo": 146,
       "streak": 0,
       "avatar": "https://cdn.discordapp.com/avatars/1490133268463353989/ea79da46b6f7070533face10dcb92f2b.png?size=1024"
+    },
+    {
+      "name": "potato",
+      "username": "ropotato.",
+      "discordId": "1239969659185401956",
+      "elo": 200,
+      "streak": 0,
+      "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024"
     }
   ],
-  "lastUpdated": 1775384493
+  "lastUpdated": 1775422625
 }
