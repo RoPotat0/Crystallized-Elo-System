@@ -127,6 +127,7 @@ async function fetchData(showSkeleton = false) {
             const date = new Date(data.lastUpdated * 1000);
             document.getElementById('update-time').innerText = "Last update: " + date.toLocaleTimeString();
         }
+        if (showSkeleton) await new Promise(r => setTimeout(r, 1000));
         render(players);
     } catch(e) { console.error(e); }
     lb.classList.remove('loading');
