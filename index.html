@@ -122,7 +122,6 @@ async function load() {
     btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
     await fetchData();
 }
-}
 
 function render(list) {
     const container = document.getElementById('lb-list');
