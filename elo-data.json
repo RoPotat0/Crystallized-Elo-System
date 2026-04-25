@@ -23,7 +23,15 @@
       "elo": 243,
       "streak": 2,
       "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024"
+    },
+    {
+      "name": "Hans",
+      "username": "mountainistic",
+      "discordId": "1484600552733278291",
+      "elo": 200,
+      "streak": 0,
+      "avatar": "https://cdn.discordapp.com/embed/avatars/2.png"
     }
   ],
-  "lastUpdated": 1775445184
+  "lastUpdated": 1777083649
 }
