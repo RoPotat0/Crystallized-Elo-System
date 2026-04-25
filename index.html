@@ -6,13 +6,13 @@
     <title>Crystal Ranks</title>
     <link rel="icon" href="Crystal Ranks.png" type="image/png">
     <meta property="og:title" content="Crystal Ranks">
-    <meta property="og:description" content="Track your Elo ranking in Crystallized">
+    <meta property="og:description" content="Track your Elo ranking in Crystallized Competitive.">
     <meta property="og:image" content="https://ropotat0.github.io/Crystal-Ranks/Crystal%20Ranks.png">
     <meta property="og:url" content="https://ropotat0.github.io/Crystal-Ranks/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Crystal Ranks">
-    <meta name="twitter:description" content="Track your Elo ranking in Crystallized">
+    <meta name="twitter:description" content="Track your Elo ranking in Crystallized Competitive.">
     <meta name="twitter:image" content="https://ropotat0.github.io/Crystal-Ranks/Crystal%20Ranks.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -33,7 +33,8 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .stats-bar { width: 100%; max-width: 500px; display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-bottom: 10px; }
-        .lb-card { width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border); border-radius: 15px; overflow: hidden; }
+        .lb-card { width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border); border-radius: 15px; overflow: hidden; transition: opacity 0.2s ease; }
+        .lb-card.loading { opacity: 0.3; }
         .lb-row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; }
         .lb-row:hover { background: #141424; }
         .row-info { display: flex; align-items: center; gap: 12px; }
@@ -101,6 +102,8 @@ function getRank(elo, list) {
 }
 
 async function fetchData() {
+    const lb = document.getElementById('lb-list');
+    lb.classList.add('loading');
     try {
         const res = await fetch('https://raw.githubusercontent.com/RoPotat0/Crystallized-Elo-System/main/elo-data.json?nocache=' + Math.random());
         const data = await res.json();
@@ -112,6 +115,7 @@ async function fetchData() {
         }
         render(players);
     } catch(e) { console.error(e); }
+    lb.classList.remove('loading');
 }
 
 async function load() {
