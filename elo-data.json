@@ -20,18 +20,18 @@
       "name": ":Potato(Master)",
       "username": "ropotato.",
       "discordId": "1239969659185401956",
-      "elo": 221,
-      "streak": 0,
+      "elo": 241,
+      "streak": 1,
       "avatar": "https://cdn.discordapp.com/avatars/1239969659185401956/4c693cb7a27f50e0f2027caf79a533a4.png?size=1024"
     },
     {
       "name": "Hans",
       "username": "mountainistic",
       "discordId": "1484600552733278291",
-      "elo": 222,
-      "streak": 1,
+      "elo": 202,
+      "streak": 0,
       "avatar": "https://cdn.discordapp.com/embed/avatars/2.png"
     }
   ],
-  "lastUpdated": 1777225400
+  "lastUpdated": 1777225410
 }
